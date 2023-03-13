@@ -4,7 +4,7 @@ const input = document.getElementById("input");
 let controller = new AbortController();
 let signal = controller.signal;
 
-async function displayOption(response) {
+async function renderList(response) {
 
   dropdown.innerHTML = ""
 
@@ -38,7 +38,7 @@ async function displayOption(response) {
   });
 }
 
-const getPost = async (value, signal) => {
+const getCountries = async (value, signal) => {
   try {
     const response = await fetch(
       `http://universities.hipolabs.com/search?name=${value}`,
@@ -46,7 +46,7 @@ const getPost = async (value, signal) => {
     )
     const jsonValue = await response.json();
 
-    displayOption(jsonValue);
+    renderList(jsonValue);
   } catch (error) {
     console.log(error)
   }
@@ -63,7 +63,7 @@ const onChange = () => {
     controller.abort();
     controller = new AbortController();
     signal = controller.signal;
-    getPost(value, signal);
+    getCountries(value, signal);
   }
 };
 
