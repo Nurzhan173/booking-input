@@ -1,0 +1,71 @@
+#dropdown {
+  border-radius: 8px;
+  top: 55px;
+  position: absolute;
+  box-shadow: 0 2px 16px 0 rgba(26,26,26,0.24);
+  width: 445px;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 2px solid #ffb700;
+  background: white;
+  padding: 8px;
+  border-radius: 8px;
+  width: 435px;
+}
+
+.iconBed {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: 12px;
+  top: 12px;
+}
+
+.iconRemove {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  right: 12px;
+  cursor: pointer;
+}
+
+input {
+  padding-left: 35px;
+  padding-right: 35px;
+  border: none;
+  width: 400px;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.optionWrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.optionWrapper img {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.country {
+  font-size: 12px;
+}
