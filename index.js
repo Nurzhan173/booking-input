@@ -45,7 +45,7 @@ const getCountries = async (value, signal) => {
       { signal }
     )
     const jsonValue = await response.json();
-
+    console.log(response)
     renderList(jsonValue);
   } catch (error) {
     console.log(error)
