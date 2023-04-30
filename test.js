@@ -1,9 +1,6 @@
 const dropdown = document.getElementById("dropdown");
 const input = document.getElementById("input");
 
-let controller = new AbortController();
-let signal = controller.signal;
-
 const BASE_URL = 'http://universities.hipolabs.com'
 
 async function renderList(response) {
@@ -45,9 +42,10 @@ async function renderList(response) {
   });
 }
 
-const getCountries = async (value, signal) => {
+const xhr = new XMLHttpRequest();
 
-  const { get } = requester(`${BASE_URL}/search?name=${value}`, { signal })
+const getCountries = async (value) => {
+  const { get } = requester(`${BASE_URL}/search?name=${value}`)
 
   return get().then((res) => {
     return JSON.parse(res.response);
@@ -61,7 +59,7 @@ const methodTypes = {
   POST: 'POST'
 }
 
-const requester = (url, options = {}) => {
+const requester = (url) => {
   let errorEvents = {
     hasGenericError: false,
     hasServerError: false
@@ -72,7 +70,6 @@ const requester = (url, options = {}) => {
   return {
     get: () => {
       return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
 
         xhr.open(GET, url);
         xhr.send();
@@ -100,10 +97,8 @@ const clearInput = () => {
 const onChange = () => {
   const value = input.value;
   if (value) {
-    controller.abort();
-    controller = new AbortController();
-    signal = controller.signal;
-    getCountries(value, signal);
+    xhr.abort();
+    getCountries(value);
   }
 };
 
