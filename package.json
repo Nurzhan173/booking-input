@@ -1,0 +1,29 @@
+{
+  "name": "booking-input",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "module",
+    "url": "git+https://github.com/Nurzhan173/booking-input.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nurzhan173/booking-input/issues"
+  },
+  "homepage": "https://github.com/Nurzhan173/booking-input#readme",
+  "dependencies": {
+    "http-server": "^14.1.1",
+    "lodash": "^4.17.21",
+    "nurzhan-package": "^1.0.1",
+    "rxjs": "^7.8.1"
+  },
+  "description": "",
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}

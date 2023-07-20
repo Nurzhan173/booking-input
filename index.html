@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="components/Modal/modal.css">
 </head>
 <body>
+
 <div class="inputWrapper">
-  <img class="iconBed" src="assets/bed-icon.svg" />
+  <img class="iconBed" src="assets/bed-icon.svg" alt=""/>
   <input id="input" type="text" />
-  <img class="iconRemove" src="assets/remove-icon.svg" onclick="clearInput()"/>
-  <div id="dropdown"></div>
+  <img class="iconRemove" src="assets/remove-icon.svg" onclick="clearInput()" alt=""/>
+</div>
+<div id="cards"></div>
+<div class="bookDetail" id="bookDetail"></div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <div class="modal-wrapper">
+    <div id="modal-content" class="modal-content"></div>
+    <span class="close">&times;</span>
+  </div>
 </div>
 
-<script src="test.js"></script>
+<!--<script src="node_modules/nurzhan-package"></script>-->
+<!--<script src="utils/debounce.js"></script>-->
+<!--<script src="utils/requester.js"></script>-->
+<script src="components/Modal/modal.js"></script>
+<script src="dist/bundle.js"></script>
 
 </body>
 </html>

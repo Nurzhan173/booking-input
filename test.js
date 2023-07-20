@@ -1,96 +1,96 @@
-const dropdown = document.getElementById("dropdown");
+const requester = require('nurzhan-package/requester');
+const debounce = require('nurzhan-package/debounce');
+
+const cards = document.getElementById("cards");
 const input = document.getElementById("input");
 
-const BASE_URL = 'http://universities.hipolabs.com'
+const BASE_URL = 'https://www.googleapis.com/books/v1';
+const API_KEY = 'AIzaSyAHetf-9nnIkznkw1ihl36pErV0mGuvgCk';
 
-async function renderList(response) {
+async function renderCards(response) {
 
-  dropdown.innerHTML = ""
+  cards.innerHTML = "";
 
-  await response.forEach(option => {
-    const optionWrapper = document.createElement("div");
+  await response.items.forEach(book => {
+    const cardWrapper = document.createElement("div");
     const icon = document.createElement("img");
     const info = document.createElement("div");
     const name = document.createElement("div");
-    const country = document.createElement("div");
+    const authors = document.createElement("div");
     const fragmentInfo = document.createDocumentFragment();
     const fragmentOption = document.createDocumentFragment();
+    const accordion = document.createElement('div');
 
-    optionWrapper.className = "optionWrapper";
+    accordion.style.display = 'none';
+    accordion.className = 'accordion';
+
+    cardWrapper.className = "cardWrapper";
     info.className = "info";
     name.className = "name";
-    country.className = "country";
+    authors.className = "country";
+    icon.className = 'mockImage'
 
-    icon.src = './assets/location-icon.svg';
+    icon.src = book.volumeInfo?.imageLinks?.smallThumbnail || './assets/bookMock.png';
 
-    name.textContent = option.name;
-    country.textContent = option.country;
+    name.textContent = book.volumeInfo.title;
+    authors.textContent = book.volumeInfo.authors;
 
     fragmentInfo.append(name);
-    fragmentInfo.append(country);
+    fragmentInfo.append(authors);
 
     info.appendChild(fragmentInfo);
 
     fragmentOption.append(icon);
     fragmentOption.append(info);
 
-    optionWrapper.appendChild(fragmentOption);
+    cardWrapper.addEventListener('click', () => getBooksById(book.id));
 
-    dropdown.appendChild(optionWrapper);
+    cardWrapper.appendChild(fragmentOption);
+    cardWrapper.appendChild(accordion);
 
-    dropdown.style.display = "block";
+    cards.appendChild(cardWrapper);
   });
+}
+
+const renderBook = (response) => {
+
+  const content = document.getElementById('modal-content');
+  content.innerHTML = "";
+
+  const title = document.createElement("p");
+  title.textContent = response.volumeInfo.title;
+
+  content.append(title);
+  modal.appendChild(content);
+
+  modal.style.display = "block";
 }
 
 const xhr = new XMLHttpRequest();
 
-const getCountries = async (value) => {
-  const { get } = requester(`${BASE_URL}/search?name=${value}`)
+const getBooks = async (value) => {
+  const { get } = requester(`${BASE_URL}/volumes?q=${value}:keyes&key=${API_KEY}`);
 
   return get().then((res) => {
     return JSON.parse(res.response);
   }).then((jsonValue) => {
-    renderList(jsonValue);
+    renderCards(jsonValue);
   });
 };
 
-const methodTypes = {
-  GET: 'GET',
-  POST: 'POST'
+const getBooksById = async (id) => {
+
+  const { get } = requester(`${BASE_URL}/volumes/${id}`);
+
+  return get().then((res) => {
+    return JSON.parse(res.response);
+  }).then((jsonValue) => {
+    renderBook(jsonValue);
+  });
 }
 
-const requester = (url) => {
-  let errorEvents = {
-    hasGenericError: false,
-    hasServerError: false
-  };
-
-  const { GET } = methodTypes;
-
-  return {
-    get: () => {
-      return new Promise((resolve, reject) => {
-
-        xhr.open(GET, url);
-        xhr.send();
-
-        xhr.onreadystatechange = function (ev) {
-          if (ev.currentTarget.readyState === 4 && ev.currentTarget.status === 200) {
-            resolve(ev.currentTarget);
-          } else if (ev.status === 400) {
-            errorEvents.hasGenericError = true;
-            reject(ev.error);
-          } else if (ev.status === 500) {
-            errorEvents.hasServerError = true
-          }
-        }
-      })
-    }
-  }
-};
-
 const clearInput = () => {
-  dropdown.innerHTML = "";
+  cards.innerHTML = "";
   input.value = "";
 }
 
@@ -98,8 +98,11 @@ const onChange = () => {
   const value = input.value;
   if (value) {
     xhr.abort();
-    getCountries(value);
+    getBooks(value);
   }
 };
 
-input.onkeyup = onChange;
+
+const onChangeWithDebounce = debounce(onChange, 500);
+// publish requester
+input.addEventListener('change', onChangeWithDebounce);

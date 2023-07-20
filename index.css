@@ -1,10 +1,10 @@
-#dropdown {
-  border-radius: 8px;
-  top: 55px;
-  position: absolute;
-  box-shadow: 0 2px 16px 0 rgba(26,26,26,0.24);
-  width: 445px;
-}
+/*#dropdown {*/
+/*  border-radius: 8px;*/
+/*  top: 55px;*/
+/*  position: absolute;*/
+/*  box-shadow: 0 2px 16px 0 rgba(26,26,26,0.24);*/
+/*  width: 445px;*/
+/*}*/
 
 .inputWrapper {
   position: relative;
@@ -15,6 +15,7 @@
   padding: 8px;
   border-radius: 8px;
   width: 435px;
+  margin: auto;
 }
 
 .iconBed {
@@ -42,12 +43,27 @@ input {
   border-radius: 5px;
 }
 
-.optionWrapper {
+#cards {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.mockImage {
+  width: 128px;
+  height: 166px;
+}
+
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   cursor: pointer;
   padding: 8px;
-  border-bottom: 1px solid #e7e7e7;
+  border: 1px solid #e7e7e7;
+  flex-basis: 20%;
+  border-radius: 8px;
 }
 
 .optionWrapper img {
@@ -68,4 +84,10 @@ input {
 
 .country {
   font-size: 12px;
+}
+
+.bookDetail {
+  width: 100px;
+  height: 100px;
+  margin-left: 400px;
 }
