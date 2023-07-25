@@ -1,15 +1,24 @@
 const requester = require('nurzhan-package/requester');
 const debounce = require('nurzhan-package/debounce');
+import { Skeleton } from './components/Skeleton/skeleton';
+import { BASE_URL, API_KEY } from './constants/constants';
+
+window.xhr = new XMLHttpRequest();
+
+const appContainer = document.getElementById('app');
+
+const skeletonComponent = new Skeleton();
+appContainer.appendChild(skeletonComponent.render());
 
 const cards = document.getElementById("cards");
 const input = document.getElementById("input");
-
-const BASE_URL = 'https://www.googleapis.com/books/v1';
-const API_KEY = 'AIzaSyAHetf-9nnIkznkw1ihl36pErV0mGuvgCk';
+const cross = document.getElementById('cross');
+const skeleton = document.querySelector('.skeleton');
 
 async function renderCards(response) {
 
   cards.innerHTML = "";
+  skeleton.style.display = 'none';
 
   await response.items.forEach(book => {
     const cardWrapper = document.createElement("div");
@@ -19,10 +28,6 @@ async function renderCards(response) {
     const authors = document.createElement("div");
     const fragmentInfo = document.createDocumentFragment();
     const fragmentOption = document.createDocumentFragment();
-    const accordion = document.createElement('div');
-
-    accordion.style.display = 'none';
-    accordion.className = 'accordion';
 
     cardWrapper.className = "cardWrapper";
     info.className = "info";
@@ -46,7 +51,6 @@ async function renderCards(response) {
     cardWrapper.addEventListener('click', () => getBooksById(book.id));
 
     cardWrapper.appendChild(fragmentOption);
-    cardWrapper.appendChild(accordion);
 
     cards.appendChild(cardWrapper);
   });
@@ -66,10 +70,11 @@ const renderBook = (response) => {
   modal.style.display = "block";
 }
 
-const xhr = new XMLHttpRequest();
-
 const getBooks = async (value) => {
   const { get } = requester(`${BASE_URL}/volumes?q=${value}:keyes&key=${API_KEY}`);
+
+  cards.innerHTML = "";
+  skeleton.style.display = 'block';
 
   return get().then((res) => {
     return JSON.parse(res.response);
@@ -89,7 +94,7 @@ const getBooksById = async (id) => {
   });
 }
 
-const clearInput = () => {
+cross.onclick = () => {
   cards.innerHTML = "";
   input.value = "";
 }
@@ -97,12 +102,10 @@ const clearInput = () => {
 const onChange = () => {
   const value = input.value;
   if (value) {
-    xhr.abort();
+    debounce(xhr.abort(), 500);
     getBooks(value);
   }
 };
 
 
-const onChangeWithDebounce = debounce(onChange, 500);
-// publish requester
-input.addEventListener('change', onChangeWithDebounce);
+input.addEventListener('keyup', onChange);
